@@ -1,0 +1,110 @@
+﻿@page "/"
+
+@using Syncfusion.Blazor.Schedule
+<div class="control-section">
+    <SfSchedule TValue="ResourceData" Width="100%" Height="650px" @bind-SelectedDate="@CurrentDate" @bind-CurrentView="@CurrentView">
+        <ScheduleGroup Resources="@groupData"></ScheduleGroup>
+        <ScheduleResources>
+            <ScheduleResource TItem="ResourceData" TValue="int" DataSource="@ProjectData" Field="ProjectId" Title="Choose Project" Name="Projects" TextField="Text" IdField="Id" ColorField="Color"></ScheduleResource>
+            <ScheduleResource TItem="ResourceData" TValue="int[]" DataSource="@TaskData" Field="TaskId" Title="Category" Name="Categories" TextField="Text" IdField="Id" GroupIDField="GroupId" ColorField="Color" AllowMultiple="true"></ScheduleResource>
+        </ScheduleResources>
+        <ScheduleViews>
+            <ScheduleView Option="View.TimelineYear" MaxEventsPerRow="1">
+                <CellTemplate>
+                    @if (CurrentDate.Month == 1)
+                    {
+                        <div class="custom-cell-template">1000</div>
+                    }
+
+                </CellTemplate>
+            </ScheduleView>
+        </ScheduleViews>
+        <ScheduleEventSettings DataSource="@dataSource"></ScheduleEventSettings>
+    </SfSchedule>
+</div>
+@code {
+    private View CurrentView { get; set; } = View.TimelineWeek;
+    private DateTime CurrentDate { get; set; } = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
+    private List<ResourceData> dataSource = new List<ResourceData>
+{
+    new ResourceData
+    {
+        Id = 1,
+        GroupId = 1,
+        Text = "Eveniment nancy ianuarie",
+        Color = "#df5286",
+        StartTime = new DateTime(DateTime.Today.Year, 1, 5, 10, 0, 0),
+        EndTime = new DateTime(DateTime.Today.Year, 1, 5, 12, 0, 0),
+        Subject = "Test 1"
+    },
+
+    // Incerc sa pun un event pentru steven in ianuarie
+
+    new ResourceData
+    {
+        Id = 2,
+        GroupId = 1,
+        Text = "Ianuarie steven",
+        Color = "#7fa900",
+        StartTime = new DateTime(DateTime.Today.Year, 1, 15, 14, 0, 0),
+        EndTime = new DateTime(DateTime.Today.Year, 1, 15, 16, 0, 0),
+        Subject = "Test 2"
+
+    },
+
+    new ResourceData
+    {
+        Id = 3,
+        GroupId = 2,
+        Text = "Si pentru Robert",
+        Color = "#ea7a57",
+        StartTime = new DateTime(DateTime.Today.Year, 1, 20, 9, 0, 0),
+        EndTime = new DateTime(DateTime.Today.Year, 1, 20, 11, 0, 0),
+        Subject = "Test 3"
+    },
+
+}; 
+    private string[] groupData = new string[] { "Projects", "Categories" };
+    private List<ResourceData> ProjectData { get; set; } = new List<ResourceData> {
+    new ResourceData {Text = "BI Florin", Id= 1, Color= "#cb6bb2"},
+    new ResourceData {Text = "BI Madalina", Id= 2, Color= "#56ca85"},
+    new ResourceData {Text = "Programare", Id= 3, Color= "#df5286"},
+    new ResourceData {Text = "Comercial", Id= 4, Color= "#ff5733"},
+    new ResourceData {Text = "SQL", Id= 5, Color= "#62a856"}
+};
+
+    private List<ResourceData> TaskData { get; set; } = new List<ResourceData> {
+    new ResourceData { Text = "Nancy", Id= 1, GroupId = 1, Color = "#df5286" },
+    new ResourceData { Text = "Steven", Id= 2, GroupId = 1, Color = "#7fa900" },
+    new ResourceData { Text = "Robert", Id= 3, GroupId = 2, Color = "#ea7a57" },
+    new ResourceData { Text = "Smith", Id= 4, GroupId = 2, Color = "#5978ee" },
+    new ResourceData { Text = "Michael", Id= 5, GroupId = 3, Color = "#df5286" },
+    new ResourceData { Text = "Root", Id= 6, GroupId = 3, Color = "#00bdae" },
+    new ResourceData { Text = "John", Id= 7, GroupId = 4, Color = "#ff5733" },
+    new ResourceData { Text = "David", Id= 8, GroupId = 4, Color = "#62a856" },
+    new ResourceData { Text = "Linda", Id= 9, GroupId = 5, Color = "#cb6bb2" },
+    new ResourceData { Text = "Jennifer", Id= 10, GroupId = 5, Color = "#56ca85" },
+};
+
+    public class ResourceData
+    {
+        public string Text { get; set; }
+        public string Subject { get; set; }
+        public int Id { get; set; }
+        public int GroupId { get; set; }
+        public string Color { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+
+
+        //Optionale
+        public string Location { get; set; }
+        public string Description { get; set; }
+        public bool IsAllDay { get; set; }
+        public string RecurrenceRule { get; set; }
+        public string RecurrenceException { get; set; }
+        public Nullable<int> RecurrenceID { get; set; }
+
+    }
+
+}
